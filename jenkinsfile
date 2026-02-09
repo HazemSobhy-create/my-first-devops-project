@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    /* ADD THIS SECTION HERE */
+    environment {
+	MY_API_KEY = credentials('my-api-key')
+    }
     stages {
         stage('Checkout') {
             steps {
