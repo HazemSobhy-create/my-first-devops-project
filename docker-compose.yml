@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  # Your Original Purple Site
+  web:
+    image: hazemsobhy/lucifer-web:latest
+    restart: always
+
+  # A Second Test Site
+  test-site:
+    image: nginx:alpine
+    restart: always
+
+  # THE RECEPTIONIST (Reverse Proxy)
+  gateway:
+    image: nginx:alpine
+    ports:
+      - "80:80"  # This is the "Front Door"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    restart: always
