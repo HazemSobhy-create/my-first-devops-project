@@ -11,6 +11,13 @@ spec:
     command:
     - cat
     tty: true
+    resources:
+      requests:
+        memory: "512Mi"
+        cpu: "250m"
+      limits:
+        memory: "1024Mi"
+        cpu: "500m"
 '''
         }
     }
@@ -20,16 +27,19 @@ spec:
     stages {
         stage('Checkout') {
             steps {
+                echo 'Checking out code from GitHub...'
                 checkout scm
             }
         }
         stage('Build') {
             steps {
+                echo 'Building the application...'
                 sh 'ls -la'
             }
         }
         stage('Test') {
             steps {
+                echo 'Running tests...'
                 sh 'echo "Tests passed!"'
             }
         }
