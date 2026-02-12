@@ -1,7 +1,20 @@
 // Automating my Week 9 Pipeline!
 pipeline {
-    agent any
-    /* ADD THIS SECTION HERE */
+    agent {
+	kubernetes {
+	    yaml '''
+apiVersion: v1
+kind: Pod
+Spec:
+  containers:
+    - name: kubectl
+      image: bitnami/kubectl:latest
+      command:
+      - cat
+      tty: true
+'''
+	    }
+	}
     environment {
 	MY_API_KEY = credentials('my-api-key')
     }
@@ -26,9 +39,11 @@ pipeline {
 	}
 	stage('Deploy') {
             steps {
-                echo 'Spreading to other servers...'
-                sh 'kubectl apply -f deployment.yaml'
-                sh 'kubectl apply -f service.yaml'
+		container('kubectl') {
+                    echo 'Spreading to other servers...'
+                    sh 'kubectl apply -f deployment.yaml'
+                    sh 'kubectl apply -f service.yaml'
+		}
             }
         }
     }
