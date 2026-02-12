@@ -22,7 +22,14 @@ pipeline {
             steps {
                 echo 'Running tests...'
                 sh 'echo "Tests passed!"'
-            }
+
+	stage('Deploy') {
+	    steps {
+	        echo 'Spreading to other servers...'
+        	// This command tells K8s to update your website with the latest changes
+        	sh 'kubectl apply -f deployment.yaml'
+                sh 'kubectl apply -f service.yaml'
+	   }
         }
     }
 }
